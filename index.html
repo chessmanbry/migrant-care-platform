@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>移工看護媒合平台 - 身份選擇</title>
+    <style>
+        /* =========================================
+           1. 定義色彩變數 & 基礎樣式
+           ========================================= */
+        :root {
+            --primary-orange: #f97316; /* 主要色調：橘色 */
+            --secondary-blue: #3b82f6; /* 輔助色調：藍色 */
+            --bg-light-blue: #f0f8ff;  /* 淺藍色背景，讓版面更柔和 */
+            --text-dark: #1f2937;
+            --border-grey: #d1d5db;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: var(--bg-light-blue);
+            color: var(--text-dark);
+        }
+
+        /* =========================================
+           2. 左上角標題區塊 (Header)
+           ========================================= */
+        header {
+            padding: 24px 32px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10; /* 確保在最上層 */
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 0.05em;
+        }
+
+        header p {
+            margin: 4px 0 0 0;
+            font-size: 1rem;
+            color: #4b5563;
+        }
+
+        /* =========================================
+           3. 畫面中央主要內容區 (Main)
+           ========================================= */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin-top: 100px; /* 增加間距，確保與 header 不重疊 */
+        }
+
+        /* --- 身份選擇按鈕容器 --- */
+        .role-selection {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        /* --- 大按鈕通用樣式 --- */
+        .role-btn {
+            width: 160px;
+            height: 160px;
+            background-color: white;
+            border: 3px solid transparent;
+            border-radius: 16px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* 雇主按鈕：輔助色調藍色 */
+        .role-btn.employer {
+            color: var(--secondary-blue);
+        }
+        
+        /* 雇主按鈕懸停或選中狀態 */
+        .role-btn.employer.active, .role-btn.employer:hover {
+            border-color: var(--secondary-blue);
+            background-color: #eff6ff;
+            transform: translateY(-4px);
+        }
+
+        /* 移工按鈕：主要色調橘色 */
+        .role-btn.worker {
+            color: var(--primary-orange);
+        }
+        
+        /* 移工按鈕懸停或選中狀態 */
+        .role-btn.worker.active, .role-btn.worker:hover {
+            border-color: var(--primary-orange);
+            background-color: #fff7ed;
+            transform: translateY(-4px);
+        }
+
+        /* 按鈕內的圖示佔位符 */
+        .icon-placeholder {
+            font-size: 3.5rem;
+            margin-bottom: 12px;
+        }
+
+        /* --- 下拉選單與下一步按鈕區域 --- */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 344px; /* 讓寬度與上面兩個按鈕加總寬度相近 */
+        }
+
+        /* 自定義下拉選單樣式 */
+        select {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+            border: 1px solid var(--border-grey);
+            border-radius: 8px;
+            margin-bottom: 40px;
+            background-color: white;
+            cursor: pointer;
+            outline: none;
+            
+            /* 移除原生的下拉箭頭 */
+            -webkit-appearance: none; 
+            -moz-appearance: none;
+            appearance: none;
+            
+            /* 加入自定義的下拉箭頭圖示 (使用 SVG) */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23d1d5db' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 18px;
+        }
+
+        /* 下拉選單選取時的狀態 */
+        select:focus {
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+        }
+
+        /* 「下一步」按鈕樣式 */
+        .next-btn {
+            background-color: var(--primary-orange);
+            color: white;
+            border: none;
+            padding: 16px 60px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(249, 115, 22, 0.3);
+            transition: background-color 0.2s ease;
+            width: 100%;
+        }
+
+        /* 「下一步」按鈕懸停狀態 */
+        .next-btn:hover {
+            background-color: #ea580c; /* 深一點的橘色 */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>移工看護媒合平台</h1>
+        <p>昕力資訊</p>
+    </header>
+
+    <main>
+        <div class="role-selection" role="group" aria-label="請選擇您的身份">
+            <button class="role-btn employer" id="btn-employer" aria-pressed="false">
+                <span class="icon-placeholder">🧑‍🧑‍🧒</span>
+                雇主
+            </button>
+            <button class="role-btn worker" id="btn-worker" aria-pressed="false">
+                <span class="icon-placeholder">👩‍⚕️</span>
+                移工
+            </button>
+        </div>
+
+        <div class="form-group">
+            <select id="nationality-select" aria-label="選擇國籍">
+                <option value="" disabled selected>請選擇國籍</option>
+                <option value="tw">台灣 (Taiwan)</option>
+                <option value="id">印尼 (Indonesia)</option>
+                <option value="vn">越南 (Vietnam)</option>
+                <option value="ph">菲律賓 (Philippines)</option>
+            </select>
+
+            <button class="next-btn" id="btn-next">下一步</button>
+        </div>
+    </main>
+
+    <script>
+        // --- DOM 元素取得 ---
+        const btnEmployer = document.getElementById('btn-employer');
+        const btnWorker = document.getElementById('btn-worker');
+        const btnNext = document.getElementById('btn-next');
+        const nationalitySelect = document.getElementById('nationality-select');
+
+        // 當前選擇的身份，預設為 null
+        let selectedRole = null;
+
+        // --- 互動邏輯函數定義 ---
+
+        /**
+         * 處理身份按鈕點擊狀態的函數
+         * @param {string} role - 被選中的身份 ('employer' 或 'worker')
+         */
+        function selectRole(role) {
+            selectedRole = role;
+            
+            // 1. 重置所有按鈕狀態：移除 'active' 類別並將 aria-pressed 設為 false
+            btnEmployer.classList.remove('active');
+            btnEmployer.setAttribute('aria-pressed', 'false');
+            btnWorker.classList.remove('active');
+            btnWorker.setAttribute('aria-pressed', 'false');
+
+            // 2. 啟動被選中的按鈕狀態：加入 'active' 類別並將 aria-pressed 設為 true
+            if (role === 'employer') {
+                btnEmployer.classList.add('active');
+                btnEmployer.setAttribute('aria-pressed', 'true');
+            } else if (role === 'worker') {
+                btnWorker.classList.add('active');
+                btnWorker.setAttribute('aria-pressed', 'true');
+            }
+        }
+
+        // --- 事件監聽器綁定 ---
+
+        // 當點擊「雇主」大按鈕時
+        btnEmployer.addEventListener('click', () => selectRole('employer'));
+        
+        // 當點擊「移工」大按鈕時
+        btnWorker.addEventListener('click', () => selectRole('worker'));
+
+        // 當點擊「下一步」按鈕時
+        btnNext.addEventListener('click', () => {
+            // 取得下拉選單選取的國籍值
+            const nationality = nationalitySelect.value;
+            
+            // 1. 基礎防呆驗證
+            // 檢查是否選擇了身份
+            if (!selectedRole) {
+                alert('請先點擊選擇身份（雇主或移工）！');
+                return;
+            }
+            // 檢查是否選擇了國籍
+            if (!nationality) {
+                alert('請下拉選擇國籍！');
+                return;
+            }
+            
+            // 2. 根據身份別進行頁面跳轉
+            // [技術需求討論結果]：模擬身份驗證流程
+
+            if (selectedRole === 'worker') {
+                // 若選擇「移工」，則跳轉到「移工註冊/登入」驗證頁面
+                console.log("驗證通過，準備跳轉至【移工】驗證頁面。");
+                window.location.href = 'worker-auth.html';
+            } else if (selectedRole === 'employer') {
+                // 若選擇「雇主」，則跳轉到「雇主註冊/登入」驗證頁面
+                // [注意]：這裡已經修改完成，會跳轉到 employer-auth.html 檔案
+                console.log("驗證通過，準備跳轉至【雇主】驗證頁面。");
+                window.location.href = 'employer-auth.html';
+            }
+        });
+    </script>
+
+</body>
+</html>

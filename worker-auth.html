@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>移工註冊/登入 - 昕力資訊</title>
+    <style>
+        /* =========================================
+           1. 定義色彩變數 & 基礎樣式 (延用首頁規範)
+           ========================================= */
+        :root {
+            --primary-orange: #f97316; /* 主要色調：橘色 */
+            --secondary-blue: #3b82f6; /* 輔助色調：藍色 */
+            --bg-light-blue: #f0f8ff;  /* 淺藍色背景，讓版面更柔和 */
+            --text-dark: #1f2937;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: var(--bg-light-blue);
+            color: var(--text-dark);
+        }
+
+        /* =========================================
+           2. 左上角標題區塊 (Header)
+           ========================================= */
+        header {
+            padding: 24px 32px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 0.05em;
+        }
+
+        header p {
+            margin: 4px 0 0 0;
+            font-size: 1rem;
+            color: #4b5563;
+        }
+
+        /* =========================================
+           3. 中央登入/註冊區塊 (Main)
+           ========================================= */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin-top: 100px; /* 增加間距，確保與 header 不重疊 */
+        }
+
+        /* --- 登入卡片容器 --- */
+        .auth-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* --- 卡片頭部標題 --- */
+        .auth-header h2 {
+            margin: 0 0 12px 0;
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: var(--primary-orange);
+        }
+
+        .auth-header p {
+            margin: 0 0 32px 0;
+            color: #4b5563;
+            font-size: 1rem;
+        }
+
+        /* --- 輸入框群組樣式 --- */
+        .input-group {
+            text-align: left;
+            margin-bottom: 24px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #4b5563;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            box-sizing: border-box; /* 確保 padding 不會把寬度撐爆 */
+        }
+
+        /* 輸入框聚焦時的狀態 */
+        .input-group input:focus {
+            border-color: var(--secondary-blue);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        /* --- 「發送驗證碼 (OTP)」核心按鈕 --- */
+        .otp-btn {
+            background-color: var(--primary-orange);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(249, 115, 22, 0.3);
+            transition: background-color 0.2s ease;
+        }
+
+        /* 按鈕懸停狀態 */
+        .otp-btn:hover {
+            background-color: #ea580c; /* 深一點的橘色 */
+        }
+
+        /* --- 底部連結區域 --- */
+        .footer-links {
+            margin-top: 24px;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        /* 底部連結文字樣式 (藍色) */
+        .footer-links a {
+            color: var(--secondary-blue);
+            text-decoration: none;
+        }
+
+        /* 底部連結懸停狀態 (底線) */
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>移工看護媒合平台</h1>
+        <p>昕力資訊</p>
+    </header>
+
+    <main>
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2>移工註冊 / 登入</h2>
+                <p>請輸入通訊資料以開始驗證</p>
+            </div>
+
+            <div class="input-group">
+                <label for="contact-input">手機號碼 或 Email</label>
+                <input type="text" id="contact-input" placeholder="0912345678 或 user@email.com">
+            </div>
+
+            <button class="otp-btn" id="btn-otp">發送驗證碼 (OTP)</button>
+
+            <div class="footer-links">
+                <p><a href="#">我需要 Google 登入</a></p>
+                <p><a href="index.html">← 返回更換身份</a></p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- DOM 元素取得 ---
+        const btnOtp = document.getElementById('btn-otp');
+        const contactInput = document.getElementById('contact-input');
+
+        // --- 事件監聽器綁定 ---
+
+        // 當點擊「發送驗證碼 (OTP)」按鈕時
+        btnOtp.addEventListener('click', () => {
+            // 取得輸入的手機或 Email 值，並移除前後空白
+            const inputValue = contactInput.value.trim();
+            
+            // 1. 基礎防呆驗證：檢查是否輸入了東西
+            if (!inputValue) {
+                alert('請先輸入手機號碼或 Email！');
+                return;
+            }
+
+            // 2. 技術需求文件 Sprint 1 的重點：Email 與手機 OTP (假的 OTP 模擬)
+            console.log("防呆驗證通過，準備模擬為以下資料發送 OTP：", inputValue);
+            
+            // [修正關鍵點]：將 alert 警示窗改為真正的網頁跳轉！
+
+            // 修正前 (BUG)：只顯示 alert，不會跳轉
+            // alert(`驗證碼 (OTP) 已發送至：\n${inputValue}\n\n(技術文件 Sprint 1：OTP 發送功能模擬通過)`);
+            // window.location.href = '/verify-otp'; // COMMENTED OUT: BUG FIX
+
+            // 修正後 (正式啟用)：跳轉到輸入假的/模擬的 OTP 頁面
+            // window.location.href = 'verify-otp.html'; // COMMENTED OUT: BUG FIX
+
+            // 我們把它改成這樣，先通知使用者準備輸入假的驗證碼：
+            alert(`【技術展示】\n驗證碼 (OTP) 已模擬發送至：\n${inputValue}\n\n請在下一頁輸入模擬驗證碼：1234`);
+            
+            // [修正]：真正地將頁面跳轉啟用！跳轉到輸入假的/模擬的 OTP 頁面。
+            window.location.href = 'verify-otp.html'; 
+        });
+    </script>
+
+</body>
+</html>

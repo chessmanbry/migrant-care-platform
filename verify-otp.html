@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>輸入 OTP 驗證碼 - 昕力資訊</title>
+    <style>
+        /* 延用首頁與移工頁的色彩規範 */
+        :root {
+            --primary-orange: #f97316; /* 主要色調：橘色 */
+            --secondary-blue: #3b82f6; /* 輔助色調：藍色 */
+            --bg-light-blue: #f0f8ff;  /* 淺藍色背景 */
+            --text-dark: #1f2937;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: var(--bg-light-blue);
+            color: var(--text-dark);
+        }
+
+        /* 左上角標題區塊（延用） */
+        header {
+            padding: 24px 32px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 0.05em;
+        }
+
+        header p {
+            margin: 4px 0 0 0;
+            font-size: 1rem;
+            color: #4b5563;
+        }
+
+        /* 中央 OTP 輸入區塊 */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin-top: 100px; /* 增加間距 */
+        }
+
+        .otp-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .otp-header h2 {
+            margin: 0 0 12px 0;
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: var(--primary-orange); /* 核心動作頁面使用橘色 */
+        }
+
+        .otp-header p {
+            margin: 0 0 32px 0;
+            color: #4b5563;
+            font-size: 1rem;
+        }
+
+        /* 4 數字輸入框容器 */
+        .otp-input-group {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .otp-field {
+            width: 50px;
+            height: 60px;
+            font-size: 2rem;
+            text-align: center;
+            border: 2px solid #d1d5db;
+            border-radius: 8px;
+            background-color: white;
+        }
+
+        .otp-field:focus {
+            border-color: var(--primary-orange);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+        }
+
+        /* 確認驗證按鈕 */
+        .confirm-btn {
+            background-color: var(--primary-orange);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(249, 115, 22, 0.3);
+            transition: background-color 0.2s;
+        }
+
+        .confirm-btn:hover {
+            background-color: #ea580c; /* 深一點的橘色 */
+        }
+
+        /* 底部連結 */
+        .footer-links {
+            margin-top: 24px;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .footer-links a {
+            color: var(--secondary-blue);
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* 模擬 OTP 的提示文字 */
+        .demo-tip {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #9ca3af;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>移工看護媒合平台</h1>
+        <p>昕力資訊</p>
+    </header>
+
+    <main>
+        <div class="otp-container">
+            <div class="otp-header">
+                <h2>輸入 4 位數驗證碼 (OTP)</h2>
+                <p>我們已發送驗證碼至您的通訊資料。</p>
+            </div>
+
+            <div class="otp-input-group">
+                <input type="text" class="otp-field" id="field-1" maxlength="1">
+                <input type="text" class="otp-field" id="field-2" maxlength="1">
+                <input type="text" class="otp-field" id="field-3" maxlength="1">
+                <input type="text" class="otp-field" id="field-4" maxlength="1">
+            </div>
+
+            <button class="confirm-btn" id="btn-confirm">確認驗證</button>
+
+            <div class="footer-links">
+                <p><a href="#">重新發送驗證碼 (30s)</a></p>
+                <p><a href="index.html">← 返回更換通訊資料</a></p>
+            </div>
+
+            <div class="demo-tip">技術需求文件 Sprint 1：OTP 模擬驗證碼：1234</div>
+        </div>
+    </main>
+
+    <script>
+        // --- 取得 DOM 元素 ---
+        // 取得四個輸入框，並將它們存入陣列，方便遍歷操作
+        const fields = [
+            document.getElementById('field-1'),
+            document.getElementById('field-2'),
+            document.getElementById('field-3'),
+            document.getElementById('field-4')
+        ];
+        // 取得確認驗證按鈕
+        const btnConfirm = document.getElementById('btn-confirm');
+
+        // --- 互動邏輯函數定義 ---
+
+        // 當一個框輸入完一個數字，自動跳到下一個輸入框
+        fields.forEach((field, index) => {
+            field.addEventListener('input', (e) => {
+                // 如果目前輸入框輸入了一個字元，且不是最後一個輸入框
+                if (e.target.value.length === 1 && index < fields.length - 1) {
+                    // 將焦點聚焦到下一個輸入框
+                    fields[index + 1].focus();
+                }
+            });
+        });
+
+        // 處理確認驗證邏輯
+        btnConfirm.addEventListener('click', () => {
+            // 1. 將四個輸入框的值組合起來，形成 enteredOtp 字串
+            const enteredOtp = fields.map(f => f.value).join('');
+            
+            // 2. 技術需求文件 Sprint 1 的重點：OTP 驗證模擬 (Fake OTP)
+            // 我們使用模擬驗證碼：1234
+            if (enteredOtp === '1234') {
+                console.log("模擬驗證成功！enteredOtp: ", enteredOtp);
+                // 顯示成功警示窗（未來可以改為跳轉到 Dashboard）
+                alert(`模擬驗證成功！\n準備前往使用者 Dashboard...\n(技術需求文件：MVP 驗證通關通過)`);
+                // window.location.href = '/dashboard';
+            } else {
+                // 若驗證碼輸入錯誤（或不符合模擬碼 1234），顯示錯誤提示
+                console.log("驗證失敗！enteredOtp: ", enteredOtp);
+                alert('驗證碼錯誤，請重新輸入！(技術展示模擬：請輸入 1234)');
+            }
+        });
+    </script>
+
+</body>
+</html>

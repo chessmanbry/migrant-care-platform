@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>移工首頁 Dashboard - 昕力資訊</title>
+    <style>
+        /* 延用色彩與字體規範 */
+        :root {
+            --primary-orange: #f97316;
+            --secondary-blue: #3b82f6;
+            --bg-light-blue: #f0f8ff;
+            --text-dark: #1f2937;
+            --card-border: #e5e7eb;
+            --success-green: #10b981;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--bg-light-blue);
+            color: var(--text-dark);
+        }
+
+        /* 導覽列 */
+        nav {
+            width: 250px;
+            background-color: white;
+            padding: 24px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        nav h1 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin: 0 0 8px 0;
+        }
+
+        nav .company-name {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin: 0 0 40px 0;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #4b5563;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-link.active {
+            background-color: #fff7ed;
+            color: var(--primary-orange);
+        }
+
+        .nav-link:hover:not(.active) {
+            background-color: #f3f4f6;
+        }
+
+        /* 主內容區域 */
+        main {
+            flex: 1;
+            padding: 40px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        header h2 {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            background-color: #e5e7eb;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+        }
+
+        .user-name {
+            font-weight: bold;
+        }
+
+        /* Dashboard 卡片 */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .card {
+            background-color: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--card-border);
+        }
+
+        .card-header h3 {
+            margin: 0 0 16px 0;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #4b5563;
+        }
+
+        /* 個人資料卡片 */
+        .profile-card {
+            grid-column: span 1;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background-color: #e5e7eb;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--primary-orange);
+            width: 60%; /* 模擬進度 */
+            border-radius: 6px;
+        }
+
+        .profile-status-text {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .continue-btn {
+            background-color: var(--primary-orange);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .continue-btn:hover {
+            background-color: #ea580c;
+        }
+
+        /* 媒合狀態卡片 */
+        .status-card {
+            grid-column: span 1;
+            text-align: center;
+        }
+
+        .status-card .status-icon {
+            font-size: 3rem;
+            color: var(--success-green);
+            margin-bottom: 8px;
+        }
+
+        .status-card .status-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--success-green);
+            margin-bottom: 8px;
+        }
+
+        .status-card .status-desc {
+            color: #6b7280;
+        }
+
+        /* 推薦工作卡片 */
+        .jobs-card {
+            grid-column: span 2;
+        }
+
+        .job-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .job-item:last-child {
+            border-bottom: none;
+        }
+
+        .job-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .job-desc {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .view-btn {
+            background-color: white;
+            color: var(--secondary-blue);
+            border: 2px solid var(--secondary-blue);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .view-btn:hover {
+            background-color: #eff6ff;
+        }
+
+        /* 模擬模式提示 */
+        .demo-mode-tip {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <h1>移工看護媒合平台</h1>
+        <p class="company-name">昕力資訊</p>
+        
+        <div class="nav-links">
+            <a href="#" class="nav-link active"><span>🏠</span> 首頁</a>
+            <a href="#" class="nav-link"><span>👤</span> 個人檔案</a>
+            <a href="#" class="nav-link"><span>💼</span> 工作機會</a>
+            <a href="#" class="nav-link"><span>💬</span> 訊息</a>
+            <a href="#" class="nav-link"><span>⚙️</span> 設定</a>
+        </div>
+    </nav>
+
+    <main>
+        <header>
+            <h2>你好，Amina！</h2>
+            <div class="user-profile">
+                <div class="user-avatar">👩‍⚕️</div>
+                <span class="user-name">使用者 Amina</span>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            <div class="card profile-card">
+                <div class="card-header">
+                    <h3>個人資料完成度</h3>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <p class="profile-status-text">剩餘步驟：上傳護照副本、填寫詳細簡歷。</p>
+                <button class="continue-btn">繼續填寫</button>
+            </div>
+
+            <div class="card status-card">
+                <div class="card-header">
+                    <h3>目前媒合狀態</h3>
+                </div>
+                <div class="status-icon">✅</div>
+                <div class="status-title">待媒合 (Available)</div>
+                <p class="status-desc">您的檔案正在向雇主公開中。</p>
+            </div>
+
+            <div class="card jobs-card">
+                <div class="card-header">
+                    <h3>推薦工作</h3>
+                </div>
+                
+                <div class="job-item">
+                    <div>
+                        <div class="job-title">👴 尋求長期住家看護 (台北市大安區)</div>
+                        <div class="job-desc">薪資：$30,000/月 | 需求：懂簡單中文</div>
+                    </div>
+                    <button class="view-btn">查看詳情</button>
+                </div>
+
+                <div class="job-item">
+                    <div>
+                        <div class="job-title">👵 尋求短期居家照顧 (新北市板橋區)</div>
+                        <div class="job-desc">薪資：$2,500/天 | 需求：具有復健經驗者佳</div>
+                    </div>
+                    <button class="view-btn">查看詳情</button>
+                </div>
+            </div>
+        </div>
+
+        <p class="demo-mode-tip">目前為功能模擬模式 (技術展示用)</p>
+    </main>
+
+</body>
+</html>
