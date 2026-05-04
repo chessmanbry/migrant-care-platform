@@ -1,3 +1,44 @@
-<!doctype html><html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>找人｜移工看護媒合平台</title><link rel="stylesheet" href="app.css"></head><body>
-<header class="topbar"><a class="brand" href="home.html">移工看護媒合平台 <small>昕力資訊</small></a><nav class="nav"><a href="home.html">首頁</a><a href="find-workers.html" class="active">找人</a><a href="resources.html">資源</a><a href="home.html#process">流程</a><a href="home.html#about">簡介</a></nav><div class="nav-icons"><span>🔔</span><span>✉️</span><span>🌐</span><span>👤</span></div></header>
-<main class="container find-layout"><aside class="filters"><div class="search-box">🔍<input id="keyword" placeholder="關鍵字搜尋"></div><div class="filter-group"><h4>地點</h4><select style="width:100%;padding:8px;border-radius:999px;border:1px solid #111"><option>城市</option><option>雙北</option><option>台中</option><option>高雄</option></select></div><div class="filter-group"><h4>照護類型</h4><label class="check"><input data-filter type="checkbox" value="失智症"> 失智症照護</label><label class="check"><input data-filter type="checkbox" value="長期臥床"> 長期臥床/重度失能</label><label class="check"><input data-filter type="checkbox" value="中風"> 中風復健協助</label><label class="check"><input data-filter type="checkbox" value="糖尿病"> 慢性病管理</label></div><div class="filter-group"><h4>工作經驗</h4><label class="check"><input type="checkbox"> 無經驗</label><label class="check"><input type="checkbox"> 3年以下</label><label class="check"><input type="checkbox"> 3~5年</label><label class="check"><input type="checkbox"> 5~10年</label><label class="check"><input data-filter type="checkbox" value="10年以上"> 10年以上</label></div><div class="filter-group"><h4>狀態</h4><label class="check"><input data-filter type="checkbox" value="可立即上工"> 可立即上工</label><label class="check"><input data-filter type="checkbox" value="資料審核中"> 資料審核中</label><label class="check"><input data-filter type="checkbox" value="目前不可"> 不可上工</label></div><div class="filter-group"><h4>語言</h4><label class="check"><input data-filter type="checkbox" value="中文"> 中文</label><label class="check"><input data-filter type="checkbox" value="英文"> 英文</label><label class="check"><input data-filter type="checkbox" value="台語"> 台語</label></div><div class="filter-group"><h4>標籤</h4><div class="tag-cloud"><span class="tag">#溫和有耐心</span><span class="tag">#活潑開朗</span><span class="tag">#力氣大</span><span class="tag">#會煮台菜</span><span class="tag">#在台可速配</span><span class="tag">#前雇主高評價</span><span class="tag">#具醫療背景</span></div></div><div class="ad">廣告</div></aside><section><div id="workerList" class="worker-list"></div><div class="pagination"><a href="#">&lt;</a><a class="active" href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><span>....</span><a href="#">10</a><a href="#">&gt;</a></div></section></main><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>找人｜移工看護媒合平台</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="home.html"><span class="brand-title">移工媒合平台</span><span class="brand-subtitle">昕力科技</span></a>
+  <nav class="nav" aria-label="主要導覽">
+    <a href="home.html">首頁</a><a href="find-workers.html" class="active">找人</a><a href="worker-profile.html">移工上傳</a><a href="admin-login.html">管理員登入</a><a href="resources.html">資源⌄</a>
+  </nav>
+  <div class="nav-actions" aria-label="快捷功能">
+    <button type="button" class="icon-btn" data-action="notify" aria-label="通知"><span class="bell-icon" aria-hidden="true"></span></button>
+    <a class="icon-btn" href="chat.html" aria-label="訊息"><span class="mail-icon" aria-hidden="true"></span></a>
+    <button type="button" class="icon-btn" data-action="language" aria-label="語言切換"><span class="globe-icon" aria-hidden="true"></span></button>
+    <a class="icon-btn" href="employer-auth.html" aria-label="會員登入"><span class="user-icon" aria-hidden="true"></span></a>
+  </div>
+</header>
+<main class="container find-layout">
+  <aside class="filters">
+    <div class="search-box">🔍<input id="keyword" placeholder="關鍵字搜尋"></div>
+    <div class="filter-group"><h4>地點</h4><select><option>城市</option><option>雙北</option><option>台中</option><option>高雄</option></select></div>
+    <div class="filter-group"><h4>照護類型</h4><label class="check"><input data-filter type="checkbox" value="失智症"> 失智症照護</label><label class="check"><input data-filter type="checkbox" value="長期臥床"> 長期臥床/重度失能</label><label class="check"><input data-filter type="checkbox" value="中風"> 中風復健協助</label><label class="check"><input data-filter type="checkbox" value="糖尿病"> 慢性病管理（如糖尿病/高血壓）</label><label class="check"><input data-filter type="checkbox" value="高齡"> 高齡陪護/生活協助</label><button class="filter-more" type="button">顯示更多</button></div>
+    <div class="filter-group"><h4>技能</h4><label class="check"><input data-filter type="checkbox" value="鼻胃管"> 鼻胃管/管灌餵食</label><label class="check"><input data-filter type="checkbox" value="抽痰"> 抽痰/氣切護理</label><label class="check"><input data-filter type="checkbox" value="翻身拍背"> 翻身拍背/褥瘡預防</label><label class="check"><input data-filter type="checkbox" value="輪椅"> 輪椅移位/輔具操作</label><label class="check"><input data-filter type="checkbox" value="會煮台菜"> 會煮台灣料理</label><button class="filter-more" type="button">顯示更多</button></div>
+    <div class="filter-group"><h4>語言</h4><label class="check"><input data-filter type="checkbox" value="中文"> 中文</label><label class="check"><input data-filter type="checkbox" value="英文"> 英文</label><label class="check"><input data-filter type="checkbox" value="台語"> 台語</label></div>
+    <div class="filter-group"><h4>工作經驗</h4><label class="check"><input type="checkbox"> 無經驗</label><label class="check"><input type="checkbox"> 3年以下</label><label class="check"><input type="checkbox"> 3~5年</label><label class="check"><input type="checkbox"> 5~10年</label><label class="check"><input data-filter type="checkbox" value="10年以上"> 10年以上</label></div>
+    <div class="filter-group"><h4>狀態</h4><label class="check"><input data-filter type="checkbox" value="可立即上工"> 可立即上工</label><label class="check"><input data-filter type="checkbox" value="資料審核中"> 資料審核中</label><label class="check"><input data-filter type="checkbox" value="目前不可"> 不可上工</label></div>
+    <div class="filter-group"><h4>發布時間</h4><label class="check"><input type="checkbox"> 全部</label><label class="check"><input type="checkbox"> 一個禮拜前</label><label class="check"><input type="checkbox"> 一個月前</label><label class="check"><input type="checkbox"> 兩個月前</label><label class="check"><input type="checkbox"> 三個月以上</label></div>
+    <div class="filter-group"><h4>標籤</h4><div class="tag-cloud"><span class="tag">#溫和有耐心</span><span class="tag">#活潑開朗</span><span class="tag">#力氣大/體力好</span><span class="tag">#細心愛乾淨</span><span class="tag">#會聽台語</span><span class="tag">#會煮台菜</span><span class="tag">#照顧處理困難</span><span class="tag">#不怕寵物</span><span class="tag">#作息規律</span><span class="tag">#在台可速配</span><span class="tag">#無逃跑紀錄</span><span class="tag">#10年以上資歷</span><span class="tag">#前雇主高評價</span><span class="tag">#具醫療/護理背景</span></div></div>
+    <div class="ad">廣告</div>
+  </aside>
+  <section>
+    <div class="list-tool"><button type="button" class="sort-btn">以＿排序</button></div>
+    <div id="workerList" class="worker-list"></div>
+    <div class="pagination"><a href="#">&lt;</a><a class="active" href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><span>....</span><a href="#">10</a><a href="#">&gt;</a></div>
+  </section>
+</main>
+<script src="local-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

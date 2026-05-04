@@ -177,6 +177,9 @@
         .next-btn:hover {
             background-color: #ea580c; /* 深一點的橘色 */
         }
+    .role-btn.admin { color: #111827; }
+        .role-btn.admin.active, .role-btn.admin:hover { border-color: #111827; background-color: #f9fafb; transform: translateY(-4px); }
+        @media(max-width:720px){.role-selection{flex-direction:column}.role-btn{width:220px;height:132px}}
     </style>
 </head>
 <body>
@@ -195,6 +198,10 @@
             <button class="role-btn worker" id="btn-worker" aria-pressed="false">
                 <span class="icon-placeholder">👩‍⚕️</span>
                 移工
+            </button>
+            <button class="role-btn admin" id="btn-admin" aria-pressed="false">
+                <span class="icon-placeholder">🛡️</span>
+                管理員
             </button>
         </div>
 
@@ -215,6 +222,7 @@
         // --- DOM 元素取得 ---
         const btnEmployer = document.getElementById('btn-employer');
         const btnWorker = document.getElementById('btn-worker');
+        const btnAdmin = document.getElementById('btn-admin');
         const btnNext = document.getElementById('btn-next');
         const nationalitySelect = document.getElementById('nationality-select');
 
@@ -235,6 +243,8 @@
             btnEmployer.setAttribute('aria-pressed', 'false');
             btnWorker.classList.remove('active');
             btnWorker.setAttribute('aria-pressed', 'false');
+            btnAdmin.classList.remove('active');
+            btnAdmin.setAttribute('aria-pressed', 'false');
 
             // 2. 啟動被選中的按鈕狀態：加入 'active' 類別並將 aria-pressed 設為 true
             if (role === 'employer') {
@@ -243,6 +253,9 @@
             } else if (role === 'worker') {
                 btnWorker.classList.add('active');
                 btnWorker.setAttribute('aria-pressed', 'true');
+            } else if (role === 'admin') {
+                btnAdmin.classList.add('active');
+                btnAdmin.setAttribute('aria-pressed', 'true');
             }
         }
 
@@ -253,6 +266,7 @@
         
         // 當點擊「移工」大按鈕時
         btnWorker.addEventListener('click', () => selectRole('worker'));
+        btnAdmin.addEventListener('click', () => selectRole('admin'));
 
         // 當點擊「下一步」按鈕時
         btnNext.addEventListener('click', () => {
@@ -274,14 +288,19 @@
             // 2. 根據身份別進行頁面跳轉
             // [技術需求討論結果]：模擬身份驗證流程
 
-            if (selectedRole === 'worker') {
+            if (selectedRole === 'admin') {
+                localStorage.setItem('mcp_role','admin');
+                window.location.href = 'admin-login.html';
+            } else if (selectedRole === 'worker') {
                 // 若選擇「移工」，則跳轉到「移工註冊/登入」驗證頁面
                 console.log("驗證通過，準備跳轉至【移工】驗證頁面。");
+                localStorage.setItem('mcp_role','worker');
                 window.location.href = 'worker-auth.html';
             } else if (selectedRole === 'employer') {
                 // 若選擇「雇主」，則跳轉到「雇主註冊/登入」驗證頁面
                 // [注意]：這裡已經修改完成，會跳轉到 employer-auth.html 檔案
                 console.log("驗證通過，準備跳轉至【雇主】驗證頁面。");
+                localStorage.setItem('mcp_role','employer');
                 window.location.href = 'employer-auth.html';
             }
         });

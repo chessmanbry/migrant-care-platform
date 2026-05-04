@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>管理員登入｜移工看護媒合平台</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body class="auth-page-shell">
+  <header class="simple-auth-header"><a href="index.html">移工看護媒合平台</a><span>Admin Console</span></header>
+  <main class="auth-center">
+    <section class="auth-card admin-login-card">
+      <p class="eyebrow">Administrator</p>
+      <h1>管理員登入</h1>
+      <p class="muted">後台僅供平台營運、審核與客服管理使用。展示版帳密如下方提示。</p>
+      <form id="adminLoginForm">
+        <label>管理員帳號<input name="account" autocomplete="username" placeholder="admin" required></label>
+        <label>密碼<input name="password" type="password" autocomplete="current-password" placeholder="admin1234" required></label>
+        <button class="btn btn-primary full" type="submit">登入後台</button>
+      </form>
+      <div class="helper-card compact"><b>展示帳密：</b>admin / admin1234<br>登入後可審核移工資料、查看勞雇聊天與平台運作狀態。</div>
+      <a class="back-link" href="index.html">← 返回身份選擇</a>
+    </section>
+  </main>
+  <script src="local-data.js"></script><script src="app.js"></script>
+</body>
+</html>

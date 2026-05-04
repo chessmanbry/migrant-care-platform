@@ -213,8 +213,9 @@
             if (enteredOtp === '1234') {
                 console.log("模擬驗證成功！enteredOtp: ", enteredOtp);
                 // 顯示成功警示窗（未來可以改為跳轉到 Dashboard）
-                alert(`模擬驗證成功！\n準備前往平台首頁...`);
-                window.location.href = "home.html";
+                alert(`模擬驗證成功！\n準備前往使用者 Dashboard...`);
+                const role = localStorage.getItem('mcp_role') || 'worker';
+                window.location.href = role === 'admin' ? 'admin-login.html' : (role === 'employer' ? 'find-workers.html' : 'worker-dashboard.html');
             } else {
                 // 若驗證碼輸入錯誤（或不符合模擬碼 1234），顯示錯誤提示
                 console.log("驗證失敗！enteredOtp: ", enteredOtp);

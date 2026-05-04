@@ -192,6 +192,7 @@
         // 當點擊「發送驗證碼 (OTP)」按鈕時
         btnOtp.addEventListener('click', () => {
             // 取得輸入的手機或 Email 值，並移除前後空白
+            localStorage.setItem('mcp_role','worker');
             const inputValue = contactInput.value.trim();
             
             // 1. 基礎防呆驗證：檢查是否輸入了東西

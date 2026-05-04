@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>找工作｜移工看護媒合平台</title><link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="topbar worker-topbar floating-island">
+  <a class="brand" href="worker-dashboard.html"><span class="brand-title">移工媒合平台</span><span class="brand-subtitle">昕力科技</span></a>
+  <nav class="nav" aria-label="移工主要導覽"><a href="worker-dashboard.html">首頁</a><a href="find-jobs.html" class="active">找工作</a><a href="worker-profile.html">上傳資料</a><a href="chat.html">訊息</a><a href="resources.html">資源⌄</a></nav>
+  <div class="nav-actions"><button class="icon-btn" data-action="notify" aria-label="通知"><span class="bell-icon"></span></button><a class="icon-btn" href="chat.html" aria-label="訊息"><span class="mail-icon"></span></a><button class="icon-btn" data-action="language" aria-label="語言"><span class="globe-icon"></span></button><a class="icon-btn" href="worker-auth.html" aria-label="會員"><span class="user-icon"></span></a></div>
+</header>
+<main class="container find-layout job-layout worker-market-page">
+  <aside class="filters">
+    <div class="worker-quick-panel">
+      <p class="eyebrow">Worker Side</p>
+      <h2>先看雇主需求，再決定是否上傳資料</h2>
+      <p>你可以先瀏覽雇主的照護條件、地區、文件狀態與薪資。要自薦或正式交流前，請先完成履歷與文件上傳。</p>
+      <a class="btn btn-primary full" href="worker-profile.html">上傳履歷與文件</a>
+      <button class="btn btn-secondary full" type="button" id="seedWorkerProfile">快速建立展示履歷</button>
+    </div>
+    <div class="search-box">🔍<input id="jobKeyword" placeholder="搜尋地區、照護類型、語言"></div>
+    <div class="filter-group"><h4>工作地點</h4><label class="check"><input data-job-filter type="checkbox" value="台北"> 台北</label><label class="check"><input data-job-filter type="checkbox" value="新北"> 新北</label><label class="check"><input data-job-filter type="checkbox" value="台中"> 台中</label><label class="check"><input data-job-filter type="checkbox" value="高雄"> 高雄</label></div>
+    <div class="filter-group"><h4>照護類型</h4><label class="check"><input data-job-filter type="checkbox" value="失智"> 失智照護</label><label class="check"><input data-job-filter type="checkbox" value="中風"> 中風復健</label><label class="check"><input data-job-filter type="checkbox" value="鼻胃管"> 鼻胃管/管灌</label><label class="check"><input data-job-filter type="checkbox" value="夜間"> 夜間協助</label></div>
+    <div class="filter-group"><h4>住宅型態</h4><label class="check"><input data-job-filter type="checkbox" value="大樓"> 大樓</label><label class="check"><input data-job-filter type="checkbox" value="公寓"> 公寓</label><label class="check"><input data-job-filter type="checkbox" value="透天"> 透天</label></div>
+    <div class="filter-group"><h4>雇主文件狀態</h4><label class="check"><input data-job-filter type="checkbox" value="招募許可"> 已取得招募許可</label><label class="check"><input data-job-filter type="checkbox" value="國內推介完成"> 國內推介完成</label></div>
+    <div class="ad">找工作</div>
+  </aside>
+  <section>
+    <section class="job-hero-card"><div><p class="eyebrow">Job Matching</p><h1>找工作</h1><p>依照雇主端同一套卡片設計呈現工作需求；公開列表先顯示基本照護條件，詳細病況在交流階段逐步揭露。</p></div><a class="btn btn-primary" href="worker-profile.html">我要上傳資料</a></section>
+    <div class="list-tool"><button type="button" class="sort-btn">以適合度排序</button><button type="button" class="sort-btn" onclick="location.href='worker-profile.html'">上傳資料</button></div>
+    <div id="jobCards" class="worker-list"></div>
+    <div class="pagination"><a href="#">&lt;</a><a class="active" href="#">1</a><a href="#">2</a><a href="#">3</a><span>....</span><a href="#">8</a><a href="#">&gt;</a></div>
+  </section>
+</main>
+<script src="local-data.js"></script><script src="app.js"></script>
+</body></html>

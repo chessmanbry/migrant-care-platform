@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>移工上傳資料｜移工看護媒合平台</title><link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="home.html"><span class="brand-title">移工媒合平台</span><span class="brand-subtitle">昕力科技</span></a>
+  <nav class="nav" aria-label="主要導覽"><a href="worker-dashboard.html">首頁</a><a href="find-jobs.html">找工作</a><a class="active" href="worker-profile.html">上傳資料</a><a href="chat.html">訊息</a></nav>
+  <div class="nav-actions"><button class="icon-btn" data-action="notify" aria-label="通知"><span class="bell-icon"></span></button><a class="icon-btn" href="chat.html" aria-label="訊息"><span class="mail-icon"></span></a><button class="icon-btn" data-action="language" aria-label="語言"><span class="globe-icon"></span></button><a class="icon-btn" href="worker-auth.html" aria-label="會員"><span class="user-icon"></span></a></div>
+</header>
+<main class="container dashboard-page">
+  <section class="mvp-hero"><div><p class="eyebrow">Worker Profile Upload</p><h1>移工端：建立履歷與上傳資料</h1><p>這裡送出的資料會存到瀏覽器 localStorage，雇主「找人」頁與後台會立即讀到同一份資料。展示版不會真的上傳到伺服器。</p></div><button class="btn btn-secondary" id="fillSample" type="button">帶入一份範例真實感資料</button></section>
+  <section class="two-col">
+    <form id="workerProfileForm" class="form-card">
+      <input type="hidden" name="id" value="">
+      <h2>基本資料</h2>
+      <label>姓名<input name="name" placeholder="例：Rina Wati" required></label>
+      <div class="form-grid"><label>國籍<select name="country" required><option value="">請選擇</option><option>印尼</option><option>越南</option><option>菲律賓</option><option>泰國</option></select></label><label>性別<select name="gender"><option>女</option><option>男</option></select></label><label>年齡<input name="age" type="number" min="18" max="65"></label><label>在台/照護年資<input name="exp" type="number" min="0" max="30"></label></div>
+      <label>期望工作地點<input name="area" placeholder="例：雙北、台中、高雄"></label>
+      <label>語言程度<input name="lang" placeholder="例：中文可日常溝通、台語基本聽懂"></label>
+      <label>擅長照護對象<input name="care" placeholder="例：臥床病人、失智症、中風病人"></label>
+      <label>專業照護技能<textarea name="skills" rows="3" placeholder="例：鼻胃管照護、灌食、翻身拍背、輪椅移位"></textarea></label>
+      <label>標籤<input name="tags" placeholder="用逗號分隔：在台可速配, 溫和有耐心, 力氣大"></label>
+      <label>預計可簽約時間<input name="availableDate" type="date"></label>
+      <label>簡單自傳<textarea name="bio" rows="4" placeholder="請描述過去照護經驗、希望工作條件、能配合事項"></textarea></label>
+      <label>必要文件上傳<input id="documents" name="documents" type="file" multiple><small>展示版只保存檔名，不保存檔案內容。建議上傳：居留證、護照、聘僱狀態文件、體檢證明。</small></label>
+      <div class="form-actions"><button class="btn btn-primary" type="submit">儲存並公開到雇主找人頁</button><a class="btn btn-ghost" href="find-jobs.html">查看雇主端</a></div>
+    </form>
+    <aside><h2>雇主端即時預覽</h2><div id="workerPreview" class="worker-list"></div><div class="info-card helper-card"><b>資料流：</b>移工端送出 → 後台待審 → 雇主端列表可看見；後台通過後狀態會變成「可立即上工」。</div></aside>
+  </section>
+</main>
+<script src="local-data.js"></script><script src="app.js"></script>
+</body></html>
