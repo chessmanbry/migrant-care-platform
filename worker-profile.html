@@ -5,10 +5,10 @@
   <title>移工上傳資料｜移工看護媒合平台</title><link rel="stylesheet" href="app.css">
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="home.html"><span class="brand-title">移工媒合平台</span><span class="brand-subtitle">昕力科技</span></a>
-  <nav class="nav" aria-label="主要導覽"><a href="worker-dashboard.html">首頁</a><a href="find-jobs.html">找工作</a><a class="active" href="worker-profile.html">上傳資料</a><a href="chat.html">訊息</a></nav>
-  <div class="nav-actions"><button class="icon-btn" data-action="notify" aria-label="通知"><span class="bell-icon"></span></button><a class="icon-btn" href="chat.html" aria-label="訊息"><span class="mail-icon"></span></a><button class="icon-btn" data-action="language" aria-label="語言"><span class="globe-icon"></span></button><a class="icon-btn" href="worker-auth.html" aria-label="會員"><span class="user-icon"></span></a></div>
+<header class="topbar worker-topbar floating-island">
+  <a class="brand" href="worker-dashboard.html"><span class="brand-title">移工媒合平台</span><span class="brand-subtitle">昕力科技</span></a>
+  <nav class="nav" aria-label="移工主要導覽"><a href="worker-dashboard.html">首頁</a><a href="find-jobs.html">找工作</a><a class="active" href="worker-profile.html">上傳資料</a><a href="chat.html">訊息</a><a href="resources.html">資源⌄</a></nav>
+  <div class="nav-actions" aria-label="快捷功能"><button type="button" class="icon-btn" data-action="notify" aria-label="通知"><span class="bell-icon" aria-hidden="true"></span></button><a class="icon-btn" href="chat.html" aria-label="訊息"><span class="mail-icon" aria-hidden="true"></span></a><button type="button" class="icon-btn" data-action="language" aria-label="語言切換"><span class="globe-icon" aria-hidden="true"></span></button><a class="icon-btn" href="worker-auth.html" aria-label="會員"><span class="user-icon" aria-hidden="true"></span></a></div>
 </header>
 <main class="container dashboard-page">
   <section class="mvp-hero"><div><p class="eyebrow">Worker Profile Upload</p><h1>移工端：建立履歷與上傳資料</h1><p>這裡送出的資料會存到瀏覽器 localStorage，雇主「找人」頁與後台會立即讀到同一份資料。展示版不會真的上傳到伺服器。</p></div><button class="btn btn-secondary" id="fillSample" type="button">帶入一份範例真實感資料</button></section>
@@ -26,7 +26,7 @@
       <label>預計可簽約時間<input name="availableDate" type="date"></label>
       <label>簡單自傳<textarea name="bio" rows="4" placeholder="請描述過去照護經驗、希望工作條件、能配合事項"></textarea></label>
       <label>必要文件上傳<input id="documents" name="documents" type="file" multiple><small>展示版只保存檔名，不保存檔案內容。建議上傳：居留證、護照、聘僱狀態文件、體檢證明。</small></label>
-      <div class="form-actions"><button class="btn btn-primary" type="submit">儲存並公開到雇主找人頁</button><a class="btn btn-ghost" href="find-jobs.html">查看雇主端</a></div>
+      <div class="form-actions"><button class="btn btn-primary" type="submit">儲存並公開到雇主找人頁</button><a class="btn btn-ghost" href="find-jobs.html">查看找工作列表</a></div>
     </form>
     <aside><h2>雇主端即時預覽</h2><div id="workerPreview" class="worker-list"></div><div class="info-card helper-card"><b>資料流：</b>移工端送出 → 後台待審 → 雇主端列表可看見；後台通過後狀態會變成「可立即上工」。</div></aside>
   </section>

@@ -2,11 +2,15 @@
 <html lang="zh-Hant-TW">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>首頁 Dashboard｜移工看護媒合平台</title><link rel="stylesheet" href="app.css"></head>
 <body>
-<header class="topbar"><a class="brand" href="home.html"><span class="brand-title">移工媒合平台</span><span class="brand-subtitle">昕力科技</span></a><nav class="nav"><a class="active" href="worker-dashboard.html">首頁</a><a href="find-jobs.html">找工作</a><a href="worker-profile.html">上傳資料</a><a href="chat.html">訊息</a></nav><div class="nav-actions"><button class="icon-btn" data-action="notify" aria-label="通知"><span class="bell-icon"></span></button><a class="icon-btn" href="chat.html" aria-label="訊息"><span class="mail-icon"></span></a><button class="icon-btn" data-action="language" aria-label="語言"><span class="globe-icon"></span></button><a class="icon-btn" href="worker-auth.html" aria-label="會員"><span class="user-icon"></span></a></div></header>
+<header class="topbar worker-topbar floating-island">
+  <a class="brand" href="worker-dashboard.html"><span class="brand-title">移工媒合平台</span><span class="brand-subtitle">昕力科技</span></a>
+  <nav class="nav" aria-label="移工主要導覽"><a class="active" href="worker-dashboard.html">首頁</a><a href="find-jobs.html">找工作</a><a href="worker-profile.html">上傳資料</a><a href="chat.html">訊息</a><a href="resources.html">資源⌄</a></nav>
+  <div class="nav-actions" aria-label="快捷功能"><button type="button" class="icon-btn" data-action="notify" aria-label="通知"><span class="bell-icon" aria-hidden="true"></span></button><a class="icon-btn" href="chat.html" aria-label="訊息"><span class="mail-icon" aria-hidden="true"></span></a><button type="button" class="icon-btn" data-action="language" aria-label="語言切換"><span class="globe-icon" aria-hidden="true"></span></button><a class="icon-btn" href="worker-auth.html" aria-label="會員"><span class="user-icon" aria-hidden="true"></span></a></div>
+</header>
 <main class="container dashboard-page">
   <section class="mvp-hero worker-side"><div><p class="eyebrow">Worker MVP</p><h1>你好，移工使用者</h1><p>完成履歷後，雇主端即可在「找人」頁看到你的基本資料；交流階段才揭露更完整照護細節。</p></div><a class="btn btn-primary" href="worker-profile.html">上傳履歷與文件</a></section>
   <section class="stats-grid"><div class="stat-card"><b>60%</b><span>目前履歷完成度</span></div><div class="stat-card"><b>3</b><span>免費 AI 配對次數</span></div><div class="stat-card"><b>待媒合</b><span>目前狀態</span></div></section>
-  <section class="two-col"><div class="admin-card"><h2>推薦雇主需求</h2><div id="jobList"></div></div><div class="admin-card"><h2>下一步提醒</h2><ol class="timeline"><li>填寫基本資料、照護技能與語言能力。</li><li>上傳居留證、護照、聘僱狀態文件或體檢證明。</li><li>等待後台審核，通過後雇主端顯示「可立即上工」。</li><li>透過平台訊息/視訊交流，不公開私人聯絡方式。</li></ol><a class="btn btn-secondary" href="find-jobs.html">看雇主端資料列表</a></div></section>
+  <section class="two-col"><div class="admin-card"><h2>推薦雇主需求</h2><div id="jobList"></div></div><div class="admin-card"><h2>下一步提醒</h2><ol class="timeline"><li>填寫基本資料、照護技能與語言能力。</li><li>上傳居留證、護照、聘僱狀態文件或體檢證明。</li><li>等待後台審核，通過後雇主端顯示「可立即上工」。</li><li>透過平台訊息/視訊交流，不公開私人聯絡方式。</li></ol><a class="btn btn-secondary" href="find-jobs.html">前往找工作</a></div></section>
 </main>
 <script src="local-data.js"></script><script src="app.js"></script>
 </body></html>

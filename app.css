@@ -123,3 +123,18 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}.container
   .brand-title{font-size:18px}.brand-subtitle{font-size:12px}
   .job-hero-card{display:grid;padding:22px}.job-hero-card h1{font-size:34px}
 }
+
+/* === bugfix 2026-05-11: role-separated navigation and working filters === */
+.tag{border:0;cursor:pointer}
+.tag.active{background:#111827!important;color:#fff!important;box-shadow:0 0 0 2px #111827 inset}
+.employer-topbar .nav a[href="worker-profile.html"],
+.employer-topbar .nav a[href="admin-login.html"],
+.employer-topbar .nav a[href="find-jobs.html"]{display:none!important}
+.admin-only-topbar .nav{margin-left:auto}
+@media(max-width:900px){
+  .topbar{align-items:flex-start;gap:10px;overflow:hidden}
+  .topbar .nav{overflow-x:auto;white-space:nowrap;justify-content:flex-start;padding-bottom:2px;scrollbar-width:none}
+  .topbar .nav::-webkit-scrollbar{display:none}
+  .topbar .nav a{flex:0 0 auto}
+  .topbar .nav-actions{align-self:center}
+}

@@ -24,7 +24,51 @@ function jobCard(c){
     <div class="actions"><button class="btn btn-primary" data-apply-job="${safe(c.id)}">我要自薦</button><a class="btn btn-secondary" href="job-detail.html?id=${encodeURIComponent(c.id)}">查看雇主資料</a><a class="btn btn-ghost" href="worker-profile.html">上傳資料</a></div>
   </article>`
 }
-function initFind(){const list=document.getElementById('workerList');if(!list)return;function render(){const q=norm(document.getElementById('keyword')?.value||'');let selected=[...document.querySelectorAll('[data-filter]:checked')].map(x=>x.value);let rows=getWorkers().filter(w=>{const hay=norm([w.name,w.country,w.area,w.lang,w.care,w.skills,(w.tags||[]).join(' '),w.status,w.gender].join(' '));const qok=!q||hay.includes(q);const fok=!selected.length||selected.some(v=>hay.includes(norm(v))||String(w.status||'').includes(v));return qok&&fok});list.innerHTML=rows.map(workerCard).join('')||'<div class="info-card" style="padding:24px">目前沒有符合條件的人選，請放寬篩選，或到「移工端」新增一份履歷。</div>'}document.addEventListener('input',e=>{if(e.target.matches('#keyword,[data-filter]'))render()});render()}
+function expMatches(exp, ranges){
+  if(!ranges.length)return true;
+  const n=Number(exp||0);
+  return ranges.some(r=>{
+    if(r==='0')return n===0;
+    if(r==='1-2')return n>0&&n<3;
+    if(r==='3-5')return n>=3&&n<=5;
+    if(r==='5-10')return n>=5&&n<=10;
+    if(r==='10+')return n>=10;
+    return true;
+  });
+}
+function initFind(){
+  const list=document.getElementById('workerList');
+  if(!list)return;
+  const activeTags=new Set();
+  function render(){
+    const q=norm(document.getElementById('keyword')?.value||'');
+    const city=norm(document.getElementById('cityFilter')?.value||'');
+    const selected=[...document.querySelectorAll('[data-filter]:checked')].map(x=>x.value);
+    const expRanges=[...document.querySelectorAll('[data-exp-filter]:checked')].map(x=>x.value);
+    const tagFilters=[...activeTags];
+    const rows=getWorkers().filter(w=>{
+      const hay=norm([w.name,w.country,w.area,w.lang,w.care,w.skills,(w.tags||[]).join(' '),w.status,w.gender].join(' '));
+      const qok=!q||hay.includes(q);
+      const cityok=!city||norm(w.area).includes(city)||hay.includes(city);
+      const selectedOk=!selected.length||selected.every(v=>hay.includes(norm(v))||norm(w.status).includes(norm(v)));
+      const expOk=expMatches(w.exp, expRanges);
+      const tagOk=!tagFilters.length||tagFilters.every(t=>hay.includes(norm(t)));
+      return qok&&cityok&&selectedOk&&expOk&&tagOk;
+    });
+    list.innerHTML=rows.map(workerCard).join('')||'<div class="info-card" style="padding:24px">目前沒有符合條件的人選，請放寬篩選，或到「移工端」新增一份履歷。</div>';
+  }
+  document.addEventListener('input',e=>{
+    if(e.target.matches('#keyword,#cityFilter,[data-filter],[data-exp-filter]'))render();
+  });
+  document.addEventListener('click',e=>{
+    const tag=e.target.closest('[data-tag-filter]');
+    if(!tag)return;
+    const value=tag.dataset.tagFilter;
+    if(activeTags.has(value)){activeTags.delete(value);tag.classList.remove('active')}else{activeTags.add(value);tag.classList.add('active')}
+    render();
+  });
+  render();
+}
 function hasUploadedWorker(){return MCPStore.getWorkers().some(w=>w.source==='worker-upload')}
 function initFindJobs(){const list=document.getElementById('jobCards');if(!list||!window.MCPStore)return;function render(){const q=norm(document.getElementById('jobKeyword')?.value||'');const selected=[...document.querySelectorAll('[data-job-filter]:checked')].map(x=>x.value);let rows=MCPStore.getEmployers().filter(c=>{const hay=norm([c.title,c.city,c.homeType,c.mobility,c.communication,c.languages,c.careType,c.weight,c.status,c.salary].join(' '));const qok=!q||hay.includes(q);const fok=!selected.length||selected.some(v=>hay.includes(norm(v)));return qok&&fok});list.innerHTML=rows.map(jobCard).join('')||'<div class="info-card" style="padding:24px">目前沒有符合條件的工作需求。</div>'}document.addEventListener('input',e=>{if(e.target.matches('#jobKeyword,[data-job-filter]'))render()});document.addEventListener('click',e=>{const apply=e.target.dataset.applyJob;if(apply){if(!hasUploadedWorker()){showToast('請先上傳履歷與文件，才能向雇主自薦。');setTimeout(()=>location.href='worker-profile.html',900);return}MCPStore.log(`移工對雇主需求 ${apply} 發出自薦展示`);showToast('已送出自薦展示；正式版會建立雙方合意與交流紀錄。')}});document.getElementById('seedWorkerProfile')?.addEventListener('click',()=>{const sample={id:`worker-demo-${Date.now()}`,name:'Rina Wati',country:'印尼',gender:'女',age:32,exp:6,area:'雙北',lang:'中文可日常溝通、台語基本聽懂',care:'臥床病人、失智症、中風復健',skills:'鼻胃管照護、灌食、翻身拍背、輪椅移位、血糖量測協助',tags:['在台可速配','溫和有耐心','力氣大/體力好','細心愛乾淨'],status:'資料審核中',statusClass:'review',rating:'新資料',approved:false,hot:false,bio:'曾在台北家庭照顧中風長者 3 年，熟悉夜間翻身、管灌與陪同回診。',availableDate:'2026-05-15',documents:['居留證.pdf','護照.pdf','體檢證明.pdf'],source:'worker-upload'};MCPStore.upsertWorker(sample);showToast('已建立展示履歷；雇主端與後台都看得到。')});render()}
 function initJobDetail(){const box=document.getElementById('jobDetail');if(!box||!window.MCPStore)return;const id=new URLSearchParams(location.search).get('id');const c=MCPStore.getEmployers().find(x=>x.id===id)||MCPStore.getEmployers()[0];if(!c){box.innerHTML='<div class="detail-panel"><p>目前沒有雇主需求資料。</p></div>';return}box.innerHTML=`<div class="detail-panel job-detail-panel"><div class="detail-head"><div><h1 class="detail-title">${safe(c.title)}</h1><p>${safe(c.city)}｜${safe(c.homeType)}｜${safe(c.salary)}｜起始 ${safe(c.startDate)}</p><div class="chips"><span class="chip">#${safe(c.status)}</span><span class="chip">#${safe(c.careType)}</span><span class="chip">#${safe(c.weight)}</span></div></div><div class="detail-actions"><button class="btn btn-primary" data-apply-job="${safe(c.id)}">我要自薦</button><a class="btn btn-secondary" href="worker-profile.html">上傳資料</a><a class="btn btn-ghost" href="find-jobs.html">返回找工作</a></div></div><div class="detail-grid"><section class="detail-block"><h3>公開雇主需求</h3><p><b>行動能力：</b>${safe(c.mobility)}</p><p><b>溝通狀況：</b>${safe(c.communication)}</p><p><b>使用語言：</b>${safe(c.languages)}</p><p><b>照護類型：</b>${safe(c.careType)}</p></section><section class="detail-block"><h3>媒合與文件狀態</h3><ol class="timeline"><li>雇主文件：${safe(c.status)}</li><li>住宅型態：${safe(c.homeType)}</li><li>體重區間：${safe(c.weight)}</li><li>公開階段不顯示私人聯絡方式。</li></ol></section></div><section class="detail-block"><h3>交流後可揭露資訊</h3><p>${safe(c.hiddenDisease||'詳細疾病、家庭規範與休假安排會在平台交流階段逐步確認。')}</p></section></div>`}
@@ -36,4 +80,35 @@ function initAdmin(){const shell=document.querySelector('.admin-console');if(!sh
 function initChat(){const box=document.getElementById('messages');if(!box)return;const id=new URLSearchParams(location.search).get('id')||'triana';const w=getWorkers().find(x=>x.id===id)||getWorkers()[0];const chat=MCPStore?.getChats().find(c=>c.workerId===(w?.id||id));const header=document.querySelector('.chat-header div');if(header&&w)header.innerHTML=`<b>${safe(w.name)}</b><br><small>AI 即時翻譯展示：中文 ⇄ 印尼語/越南語/英文</small>`;if(chat){box.innerHTML=chat.messages.map(m=>`<div class="bubble ${m.from==='employer'?'me':'worker'}">${safe(m.text)}</div>`).join('')}const quick=document.querySelectorAll('[data-reply]');quick.forEach(btn=>btn.addEventListener('click',()=>{const text=btn.dataset.reply;box.insertAdjacentHTML('beforeend',`<div class="bubble me">${safe(text)}</div>`);MCPStore?.appendChat(w?.id||id,text,'employer');setTimeout(()=>{const reply='謝謝，我可以配合。若需要，我們也可以安排視訊面談確認細節。';box.insertAdjacentHTML('beforeend',`<div class="bubble worker">${reply}</div>`);MCPStore?.appendChat(w?.id||id,reply,'worker');box.scrollTop=box.scrollHeight},450);box.scrollTop=box.scrollHeight}));document.getElementById('sendBtn')?.addEventListener('click',()=>{const input=document.getElementById('chatInput');if(!input.value.trim())return;const text=input.value.trim();box.insertAdjacentHTML('beforeend',`<div class="bubble me">${safe(text)}</div>`);MCPStore?.appendChat(w?.id||id,text,'employer');input.value='';showToast('已送出訊息，後台也能看到這筆聊天紀錄。')})}
 document.addEventListener('click',e=>{if(e.target.matches('[data-locked]')){e.preventDefault();showToast('提出聘僱意向需完成文件驗證與一次交流紀錄後開放。')}});
 document.addEventListener('click',e=>{const btn=e.target.closest('[data-action]');if(!btn)return;if(btn.dataset.action==='notify')showToast('目前沒有新的通知。');if(btn.dataset.action==='language')showToast('語言切換：繁中 / English / Bahasa Indonesia / Tiếng Việt（展示版）')});
-document.addEventListener('DOMContentLoaded',()=>{initFind();initFindJobs();initWorkerDetail();initJobDetail();initWorkerProfile();initWorkerJobs();initAdminLogin();initAdmin();initChat()});
+
+function initRoleAwareNav(){
+  const page=location.pathname.split('/').pop()||'index.html';
+  const workerPages=['worker-dashboard.html','find-jobs.html','worker-profile.html','job-detail.html'];
+  const employerPages=['home.html','find-workers.html','worker-detail.html'];
+  if(workerPages.includes(page))localStorage.setItem('mcp_role','worker');
+  if(employerPages.includes(page))localStorage.setItem('mcp_role','employer');
+  if(page==='admin.html'||page==='admin-login.html')localStorage.setItem('mcp_role','admin');
+  const role=localStorage.getItem('mcp_role')||'employer';
+  const nav=document.querySelector('.topbar .nav');
+  const brand=document.querySelector('.topbar .brand');
+  const userLink=document.querySelector('.topbar .nav-actions a[aria-label="會員登入"], .topbar .nav-actions a[aria-label="會員"]');
+  if(!nav||!brand)return;
+  if((page==='resources.html'||page==='chat.html')&&role==='worker'){
+    brand.setAttribute('href','worker-dashboard.html');
+    nav.setAttribute('aria-label','移工主要導覽');
+    nav.innerHTML='<a href="worker-dashboard.html">首頁</a><a href="find-jobs.html">找工作</a><a href="worker-profile.html">上傳資料</a><a href="chat.html">訊息</a><a href="resources.html">資源⌄</a>';
+    if(userLink){userLink.setAttribute('href','worker-auth.html');userLink.setAttribute('aria-label','會員')}
+  }
+  if((page==='resources.html'||page==='chat.html')&&role!=='worker'){
+    brand.setAttribute('href','home.html');
+    nav.setAttribute('aria-label','雇主主要導覽');
+    nav.innerHTML='<a href="home.html">首頁</a><a href="find-workers.html">找人</a><a href="chat.html">訊息</a><a href="resources.html">資源⌄</a><a href="home.html#process">流程</a>';
+    if(userLink){userLink.setAttribute('href','employer-auth.html');userLink.setAttribute('aria-label','會員登入')}
+  }
+  [...nav.querySelectorAll('a')].forEach(a=>{
+    const href=a.getAttribute('href')||'';
+    a.classList.toggle('active', href===page || (page==='resources.html'&&href==='resources.html') || (page==='chat.html'&&href==='chat.html'));
+  });
+}
+
+document.addEventListener('DOMContentLoaded',()=>{initRoleAwareNav();initFind();initFindJobs();initWorkerDetail();initJobDetail();initWorkerProfile();initWorkerJobs();initAdminLogin();initAdmin();initChat()});
